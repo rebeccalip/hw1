@@ -18,22 +18,11 @@ struct RLEList_t{
 
 //************************* DECLARATIONS ***********************//
 static RLEList CreateNode(char value);
+static RLEListResult RemoveNode(RLEList node);
 
 
 //**************************** FUNCTIONS ***********************//
 
-
-RLEList RLEListCreate()
-{
-    RLEList newNode = CreateNode('0');
-    if (!newNode)
-    {
-        return NULL;
-    }
-    newNode->counter = 0;
-    newNode->next = NULL;
-    return newNode; 
-}
 
 static RLEList CreateNode(char value)
 {
@@ -47,6 +36,32 @@ static RLEList CreateNode(char value)
     ptr->next = NULL;
     return ptr; 
 }
+
+static RLEListResult RemoveNode(RLEList prevNode)
+{
+    if(!prevNode || !prevNode->next)
+    {
+        return RLE_LIST_NULL_ARGUMENT;
+    }
+    RLEList toRemove = prevNode->next;
+    prevNode->next = toRemove->next;
+    free(toRemove);
+    return RLE_LIST_SUCCESS;
+    
+}
+
+RLEList RLEListCreate()
+{
+    RLEList newNode = CreateNode('0');
+    if (!newNode)
+    {
+        return NULL;
+    }
+    newNode->counter = 0;
+    newNode->next = NULL;
+    return newNode; 
+}
+
 
 void RLEListDestroy(RLEList list)
 {
@@ -132,13 +147,17 @@ RLEListResult RLEListRemove(RLEList list, int index)
     }
     else
     {
-        prev->next = list->next;
-        free(list);
-        return RLE_LIST_SUCCESS;
+        RLEListResult result = RemoveNode(prev);
+
+        //If unification is needed
+        if(prev->next && (prev->curChar == (prev->next)->curChar))
+        {
+            prev->counter += (prev->next)->counter;
+            return  RemoveNode(prev);
+        }
+
+        return result;
     }
-
-
-
 }
 
 // index is starting from 0
@@ -236,13 +255,28 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
         return RLE_LIST_NULL_ARGUMENT;
     }
     
-    //skiping imaginary node
+    //setting prev as the imaginary node and skiping it
+    RLEList prev = list;
     list = list->next;
     while(list)
     {
         char mappedChar = map_function(list->curChar);
-        list->curChar = mappedChar;
-        list = list->next;
+        if(mappedChar != prev->curChar)
+        {   
+            prev = list;
+            list->curChar = mappedChar;
+            list = list->next;
+        }
+        else
+        {
+            prev->counter += list->counter;
+            RLEListResult nodeRemoveStatus = RemoveNode(prev);
+            if(nodeRemoveStatus != RLE_LIST_SUCCESS)
+            {
+                return RLE_LIST_ERROR;
+            }
+        }
+        
     }
     return RLE_LIST_SUCCESS;
 }
