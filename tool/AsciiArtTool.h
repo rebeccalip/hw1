@@ -1,9 +1,12 @@
+
+
 #ifndef HW1_ASCIIARTTOOL_H
 #define HW1_ASCIIARTTOOL_H
 
+#include "RLEList.h"
 #include <stdio.h>
 #include <stdbool.h>
-#include "RLEList.h"
+
 
 /**
  * ASCII Art Tool
