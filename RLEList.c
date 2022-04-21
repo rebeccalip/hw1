@@ -125,7 +125,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    else if (index >= RLEListSize(list))
+    else if (index >= RLEListSize(list) || index < 0)
     {
         return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }  
@@ -171,7 +171,7 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
         }
         return FAILURE;
     }
-    if(index >= RLEListSize(list))
+    if(index >= RLEListSize(list) || index < 0)
     {
         if(result)
         {

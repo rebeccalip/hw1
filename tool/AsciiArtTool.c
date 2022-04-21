@@ -1,4 +1,5 @@
 #include "AsciiArtTool.h"
+#include "RLEList.h"
 #include <stdlib.h>
 
 
@@ -21,7 +22,7 @@ RLEList asciiArtRead(FILE* in_stream)
     RLEList rlelist = RLEListCreate();
     char currentChar;
     
-    while (fscanf(in_stream, %s, &currentChar) != EOF)
+    while (fscanf(in_stream, "%s", &currentChar) != EOF)
     {
         result = RLEListAppend(rlelist, currentChar);
         if (result != RLE_LIST_SUCCESS)
@@ -51,7 +52,7 @@ RLEListResult asciiArtPrint(RLEList list, FILE *out_stream)
         {
             return result;
         }
-        fprintf(out_stream, "%s" ,currentChar);
+        fprintf(out_stream, "%c" ,currentChar);
     }
 
     return result;
@@ -66,7 +67,7 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
     }
     RLEListResult resultStatus = RLE_LIST_SUCCESS;
     //remember to free the memory taken with malloc at the function
-    const char* encodedList = RLEListExportToString(list, &resultStatus);
+    char* encodedList = RLEListExportToString(list, &resultStatus);
     fprintf(out_stream, encodedList);
     free(encodedList);
     return resultStatus;
