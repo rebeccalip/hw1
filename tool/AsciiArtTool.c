@@ -22,7 +22,7 @@ RLEList asciiArtRead(FILE* in_stream)
     RLEList rlelist = RLEListCreate();
     char currentChar;
     
-    while (fscanf(in_stream, "%s", &currentChar) != EOF)
+    while ((currentChar = fgetc(in_stream)) != EOF)
     {
         result = RLEListAppend(rlelist, currentChar);
         if (result != RLE_LIST_SUCCESS)
