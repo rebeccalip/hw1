@@ -1,14 +1,19 @@
-    COMP_FLAG = -std=c99 -Wall -Werror -pedantic-errors -DNDEBUG
-    F_FOR_COMP = -I/home/mtm/public/2122b/ex1 -Itool
-    DEBUG_FLAG = -g
-	
-    AsciiArtTool : RLEList.o tool/AsciiArtTool.o tool/main.o
-	gcc $(COMP_FLAG) $(F_FOR_COMP) RLEList.o tool/AsciiArtTool.o tool/main.o -o AsciiArtTool
-    RLEList.o : RLEList.c RLEList.h
-	gcc $(COMP_FLAG) $(F_FOR_COMP) -c  RLEList.c 
-    AsciiArtTool.o : RLEList.h tool/AsciiArtTool.c tool/AsciiArtTool.h
-	gcc $(COMP_FLAG) $(F_FOR_COMP) -c tool/AsciiArtTool.c 
-    main.o : tool/main.c tool/AsciiArtTool.h
-	gcc $(COMP_FLAG) $(F_FOR_COMP) -c tool/main.c
-    clean:
-	rm -f RLEList.o tool/AsciiArtTool.o tool/main.o AsciiArtTool
+    CC =gcc
+    RLEList = /home/mtm/public/2122b/ex1/RLEList
+    MAIN = tool/main
+    ASCII_ART_TOOL = tool/AsciiArtTool
+    OBJS = $(ASCII_ART_TOOL).o RLEList.o $(MAIN ).o
+    EXEC = AsciiArtTool 
+    COMP_FLAG = -std=c99 -Wall -Werror -pedantic-errors -DNDEBUG -I/home/mtm/public/2122b/ex1 -Itool
+    DEBUG_FLAG = -g
+	
+    $(EXEC): $(OBJS)
+	$(CC) $(DEBUG_FLAG) $(COMP_FLAG) $(OBJS) -o $@
+    RLEList.o : RLEList.c $(RLEList).h
+	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG)  $*.c
+    $(ASCII_ART_TOOL).o : tool/AsciiArtTool.h $(ASCII_ART_TOOL ).c RLEList.c $(RLEList).h 
+	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG)  $*.c -o $(ASCII_ART_TOOL ).o
+    $(MAIN).o : $(MAIN).c $(ASCII_ART_TOOL ).h $(ASCII_ART_TOOL ).c RLEList.c $(RLEList).h 
+	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG)  $*.c -o $(MAIN).o
+    clean:
+	rm -f $(OBJS) $(EXEC)
