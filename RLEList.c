@@ -245,7 +245,15 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     while(list)
     {
         int numOfDigitis = getNumOfDigits(list->counter);
-        char* counterAsChar = (char*)malloc(2*(numOfDigitis + 3));
+        char* counterAsChar = (char*)malloc(numOfDigitis + 3);
+        if(!counterAsChar)
+        {
+            if(result)
+            {
+                *result = RLE_LIST_ERROR;
+            }
+            return NULL;
+        }
         sprintf(counterAsChar, "%c%d\n",list->curChar, list->counter);
         strcat(listToString, counterAsChar);
         free(counterAsChar);
