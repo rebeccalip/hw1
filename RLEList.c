@@ -5,7 +5,7 @@
 //**************************** DEFINES *************************//
 
 #define NULL_POINTER -1
-#define FAILURE '0'
+#define FAILURE 0
 #define END_OF_STRING 1
 #define NUM_OF_DATA 4 //char,counter and newline
 
@@ -64,7 +64,7 @@ static int getNumOfDigits(int number)
 
 RLEList RLEListCreate()
 {
-    RLEList newNode = CreateNode('0');
+    RLEList newNode = CreateNode('\0');
     if (!newNode)
     {
         return NULL;
