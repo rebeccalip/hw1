@@ -46,7 +46,8 @@ static RLEListResult RemoveNode(RLEList prevNode)
         return RLE_LIST_NULL_ARGUMENT;
     }
     RLEList toRemove = prevNode->next;
-    prevNode->next = toRemove->next;
+    prevNode->next = prevNode->next->next;
+    toRemove->next = NULL;
     free(toRemove);
     return RLE_LIST_SUCCESS;
     
@@ -57,6 +58,7 @@ static int getNumOfDigits(int number)
     int counter = 1;
     while((number / 10))
     {
+        number = number / 10;
         counter++;
     }
     return counter;
@@ -165,7 +167,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
         if(prev->next && (prev->curChar == (prev->next)->curChar))
         {
             prev->counter += (prev->next)->counter;
-            return  RemoveNode(prev);
+            return RemoveNode(prev);
         }
 
         return result;
@@ -238,6 +240,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         }
         return NULL;
     }
+    *listToString = '\0';
     //int index = 0;
 
     //skipinig imaginary node
@@ -268,7 +271,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function)
 {
-    if(!list)
+    if(!list || !map_function)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
@@ -293,8 +296,8 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
             {
                 return RLE_LIST_ERROR;
             }
+            list = prev->next;
         }
-        
     }
     return RLE_LIST_SUCCESS;
 }
