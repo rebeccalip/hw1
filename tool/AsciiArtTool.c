@@ -3,13 +3,6 @@
 #include <stdlib.h>
 
 
-//**************************** DEFINES *************************//
-
-
-
-//************************* DECLARATIONS ***********************//
-
-
 //**************************** FUNCTIONS ***********************//
 
 RLEList asciiArtRead(FILE* in_stream)
@@ -66,7 +59,7 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
         return RLE_LIST_NULL_ARGUMENT;
     }
     RLEListResult resultStatus = RLE_LIST_SUCCESS;
-    //remember to free the memory taken with malloc at the function
+    //remember to free the memory taken with malloc at RLEListExportToString
     char* encodedList = RLEListExportToString(list, &resultStatus);
     fprintf(out_stream, encodedList);
     free(encodedList);
