@@ -18,15 +18,15 @@ struct RLEList_t{
 };
 
 //************************* DECLARATIONS ***********************//
-static RLEList CreateNode(char value);
-static RLEListResult RemoveNode(RLEList node);
+
+static RLEList createNode(char value);
+static RLEListResult removeNode(RLEList node);
 static int getNumOfDigits(int number);
 
 
 //**************************** FUNCTIONS ***********************//
 
-
-static RLEList CreateNode(char value)
+static RLEList createNode(char value)
 {
     RLEList ptr = malloc (sizeof(*ptr));
     if (!ptr)
@@ -39,7 +39,7 @@ static RLEList CreateNode(char value)
     return ptr; 
 }
 
-static RLEListResult RemoveNode(RLEList prevNode)
+static RLEListResult removeNode(RLEList prevNode)
 {
     if(!prevNode || !prevNode->next)
     {
@@ -66,7 +66,7 @@ static int getNumOfDigits(int number)
 
 RLEList RLEListCreate()
 {
-    RLEList newNode = CreateNode('\0');
+    RLEList newNode = createNode('\0');
     if (!newNode)
     {
         return NULL;
@@ -106,7 +106,7 @@ RLEListResult RLEListAppend(RLEList list, char value)
     }
     else
     {
-        RLEList newNode = CreateNode(value);
+        RLEList newNode = createNode(value);
         if (!newNode)
         {
             return RLE_LIST_OUT_OF_MEMORY;
@@ -161,13 +161,13 @@ RLEListResult RLEListRemove(RLEList list, int index)
     }
     else
     {
-        RLEListResult result = RemoveNode(prev);
+        RLEListResult result = removeNode(prev);
 
         //If unification is needed
         if(prev->next && (prev->curChar == (prev->next)->curChar))
         {
             prev->counter += (prev->next)->counter;
-            return RemoveNode(prev);
+            return removeNode(prev);
         }
 
         return result;
@@ -291,7 +291,7 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
         else
         {
             prev->counter += list->counter;
-            RLEListResult nodeRemoveStatus = RemoveNode(prev);
+            RLEListResult nodeRemoveStatus = removeNode(prev);
             if(nodeRemoveStatus != RLE_LIST_SUCCESS)
             {
                 return RLE_LIST_ERROR;

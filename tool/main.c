@@ -1,13 +1,14 @@
 #include "AsciiArtTool.h"
 #include <string.h>
 
+//**************************** DEFINES *************************//
+
 #define SPACE ' '
 #define AT '@'
 #define PARAM_TO_MAIN 4
 
 
-
-
+//**************************** FUNCTIONS ***********************//
 
 char inverted(char currentChar)
 {
